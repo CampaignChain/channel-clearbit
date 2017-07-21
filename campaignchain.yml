@@ -1,0 +1,9 @@
+
+modules:
+    campaignchain-clearbit:
+        display_name: Clearbit
+        description: Connect with Clearbit
+        routes: 
+            new: campaignchain_channel_clearbit_create
+        hooks:
+            default:

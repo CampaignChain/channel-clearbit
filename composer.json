@@ -1,0 +1,34 @@
+{
+    "name": "campaignchain/channel-clearbit",
+    "description": "Connect with Clearbit",
+    "keywords": ["campaignchain"],
+    "type": "campaignchain-channel",
+    "license": "Apache-2.0",
+    "homepage": "http://www.campaignchain.com",
+    "authors": [
+        {
+            "name": "CampaignChain, Inc.",
+            "email": "info@campaignchain.com"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-4": { "CampaignChain\\Channel\\ClearbitBundle\\": "" }
+    },
+    "extra": {
+        "campaignchain": {
+            "kernel": {
+                "classes": [
+                    "CampaignChain\\Channel\\ClearbitBundle\\CampaignChainChannelClearbitBundle"
+                ],
+                "routing":
+                {
+                    "name": "campaignchain_channel_clearbit",
+                    "resource": "@CampaignChainChannelClearbitBundle/Resources/config/routing.yml",
+                    "prefix": "/"
+                }
+            }
+        }
+    }
+}
