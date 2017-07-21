@@ -30,9 +30,21 @@ class ClearbitController extends Controller
 
     public function createAction(Request $request)
     {
+        /*
+         * Has an API key already been provided?
+         */
+        $em = $this->getDoctrine();
+        $clearbitLocation = $em->getRepository('CampaignChainLocationClearbitBundle:Clearbit')->findOneBy([], ['id' => 'ASC']);
 
-        $form = $this->createFormBuilder()
-            ->add('access_token', 'text', array(
+        if(is_null($clearbitLocation)){
+            $isNew = true;
+            $clearbitLocation = new Clearbit();
+        } else {
+            $isNew = false;
+        }
+
+        $form = $this->createFormBuilder($clearbitLocation)
+            ->add('apiKey', 'text', array(
                 'label' => 'API Key',
                 'attr' => array('help_text' => 'Find your API key at https://dashboard.clearbit.com/api')
             ))
@@ -44,8 +56,7 @@ class ClearbitController extends Controller
             /**
              * Check if API key is valid.
              */
-            $apiKey = $form->get('access_token')->getData();
-            $isValidApiKey = ClearbitClient::isValidApiKey($apiKey);
+            $isValidApiKey = ClearbitClient::isValidApiKey($clearbitLocation->getApiKey());
 
             if($isValidApiKey) {
                 $em = $this->getDoctrine()->getManager();
@@ -53,22 +64,22 @@ class ClearbitController extends Controller
                 try {
                     $em->getConnection()->beginTransaction();
 
-                    $locationService = $this->get('campaignchain.core.location');
-                    $locationModule = $locationService->getLocationModule('campaignchain/location-clearbit', 'campaignchain-clearbit-api');
-                    $location = new Location();
-                    $location->setLocationModule($locationModule);
-                    $location->setName(self::LOCATION_NAME);
-                    $location->setUrl(self::LOCATION_URL);
+                    if($isNew) {
+                        $locationService = $this->get('campaignchain.core.location');
+                        $locationModule = $locationService->getLocationModule('campaignchain/location-clearbit', 'campaignchain-clearbit-api');
+                        $location = new Location();
+                        $location->setLocationModule($locationModule);
+                        $location->setName(self::LOCATION_NAME);
+                        $location->setUrl(self::LOCATION_URL);
 
-                    $wizard = $this->get('campaignchain.core.channel.wizard');
-                    $wizard->setName($location->getName());
-                    $wizard->addLocation($location->getUrl(), $location);
-                    $channel = $wizard->persist();
-                    $wizard->end();
+                        $wizard = $this->get('campaignchain.core.channel.wizard');
+                        $wizard->setName($location->getName());
+                        $wizard->addLocation($location->getUrl(), $location);
+                        $channel = $wizard->persist();
+                        $wizard->end();
 
-                    $clearbitLocation = new Clearbit();
-                    $clearbitLocation->setLocation($channel->getLocations()[0]);
-                    $clearbitLocation->setApiKey($apiKey);
+                        $clearbitLocation->setLocation($channel->getLocations()[0]);
+                    }
 
                     $em->persist($clearbitLocation);
                     $em->flush();
