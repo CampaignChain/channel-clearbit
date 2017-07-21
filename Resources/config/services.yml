@@ -16,5 +16,4 @@ services:
     campaignchain.channel.clearbit.rest.client:
         class: CampaignChain\Channel\ClearbitBundle\REST\ClearbitClient
         arguments:
-            - "@campaignchain.security.authentication.client.oauth.application"
-            - "@campaignchain.security.authentication.client.oauth.token"
+            - '@doctrine'

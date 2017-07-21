@@ -17,39 +17,32 @@
 
 namespace CampaignChain\Channel\ClearbitBundle\REST;
 
+use CampaignChain\Location\ClearbitBundle\Entity\Clearbit;
 use CampaignChain\Security\Authentication\Client\OAuthBundle\Entity\Token;
 use CampaignChain\Security\Authentication\Client\OAuthBundle\EntityService\ApplicationService;
 use CampaignChain\Security\Authentication\Client\OAuthBundle\EntityService\TokenService;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Guzzle\Http\Client;
 
 class ClearbitClient
 {
     const RESOURCE_OWNER = 'Clearbit';
 
-    /** @var  ApplicationService */
-    protected $oauthAppService;
-
-    /** @var  TokenService */
-    protected $oauthTokenService;
+    protected $em;
 
     protected $accessToken;
 
-    public function __construct(
-        ApplicationService $oauthAppService,
-        TokenService $oauthTokenService
-    )
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        $this->oauthAppService = $oauthAppService;
-        $this->oauthTokenService = $oauthTokenService;
+        $this->em = $managerRegistry->getManager();
     }
 
     public function connect(){
-        $application = $this->oauthAppService->getApplication(self::RESOURCE_OWNER);
+        /** @var Clearbit $clearbitLocation */
+        $clearbitLocation = $this->em->getRepository('CampaignChainLocationClearbitBundle:Clearbit')->findOneBy([], ['id' => 'ASC']);
+        $this->accessToken = $clearbitLocation->getApiKey();
 
-        // Get Access Token and Token Secret
-        /** @var Token $token */
-        $token = $this->oauthTokenService->getTokenByApplication($application);
-        $this->accessToken = $token->getAccessToken();
+        return $this;
     }
 
     static private function getResponse($method, $url, $apiKey)

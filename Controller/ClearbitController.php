@@ -18,16 +18,19 @@
 namespace CampaignChain\Channel\ClearbitBundle\Controller;
 
 use CampaignChain\Channel\ClearbitBundle\REST\ClearbitClient;
+use CampaignChain\Location\ClearbitBundle\Entity\Clearbit;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use CampaignChain\CoreBundle\Entity\Location;
 
 class ClearbitController extends Controller
 {
-    const RESOURCE_OWNER = 'Clearbit';
+    const LOCATION_NAME = 'Clearbit';
+    const LOCATION_URL = 'https://dashboard.clearbit.com/';
 
     public function createAction(Request $request)
     {
+
         $form = $this->createFormBuilder()
             ->add('access_token', 'text', array(
                 'label' => 'API Key',
@@ -45,58 +48,41 @@ class ClearbitController extends Controller
             $isValidApiKey = ClearbitClient::isValidApiKey($apiKey);
 
             if($isValidApiKey) {
+                $em = $this->getDoctrine()->getManager();
+
                 try {
-                    $em = $this->getDoctrine()->getManager();
                     $em->getConnection()->beginTransaction();
 
-                    $locationURL = 'https://dashboard.clearbit.com/';
                     $locationService = $this->get('campaignchain.core.location');
                     $locationModule = $locationService->getLocationModule('campaignchain/location-clearbit', 'campaignchain-clearbit-api');
                     $location = new Location();
                     $location->setLocationModule($locationModule);
-                    $location->setName($locationUsername);
-                    $location->setUrl($locationURL);
-                    /*
-                     * If user uploaded an image, use that as the Location image,
-                     * otherwise, take the SlideShare default profile image.
-                     */
-                    $slideShareUserImage = 'http://cdn.slidesharecdn.com/profile-photo-'.$locationUsername.'-96x96.jpg';
-                    try {
-                        getimagesize($slideShareUserImage);
-                    } catch (\Exception $e) {
-                        $slideShareUserImage = 'http://public.slidesharecdn.com/b/images/user-96x96.png';
-                    }
-                    $location->setImage($slideShareUserImage);
+                    $location->setName(self::LOCATION_NAME);
+                    $location->setUrl(self::LOCATION_URL);
+
                     $wizard = $this->get('campaignchain.core.channel.wizard');
                     $wizard->setName($location->getName());
                     $wizard->addLocation($location->getUrl(), $location);
                     $channel = $wizard->persist();
                     $wizard->end();
 
-                    $slideshareUser = new SlideShareUser();
-                    $slideshareUser->setLocation($channel->getLocations()[0]);
-                    $slideshareUser->setIdentifier($locationUsername);
-                    $slideshareUser->setPassword($locationPassword);
-                    $slideshareUser->setDisplayName($locationUsername);
-                    $em->persist($slideshareUser);
+                    $clearbitLocation = new Clearbit();
+                    $clearbitLocation->setLocation($channel->getLocations()[0]);
+                    $clearbitLocation->setApiKey($apiKey);
+
+                    $em->persist($clearbitLocation);
                     $em->flush();
                     $em->getConnection()->commit();
-                    $this->get('session')->getFlashBag()->add(
-                        'success',
-                        'The Slideshare location <a href="#">'.$locationUsername.'</a> was connected successfully.'
+
+                    $this->addFlash('success','Connected with Clearbit successfully');
+
+                    return $this->redirect(
+                        $this->generateUrl('campaignchain_core_location')
                     );
-                    return $this->redirect($this->generateUrl(
-                        'campaignchain_core_location'));
                 } catch (\Exception $e) {
                     $em->getConnection()->rollback();
                     throw $e;
                 }
-
-                $this->addFlash('success','Connected with Clearbit successfully');
-
-                return $this->redirect(
-                    $this->generateUrl('campaignchain_core_location')
-                );
             } else {
                 $this->addFlash('warning','Invalid API key');
             }
