@@ -83,10 +83,12 @@ class ClearbitClient
             throw new \Exception($errorsString);
         }
 
-        self::getResponse(
+        $res = self::getResponse(
             'GET',
             'https://person-stream.clearbit.com/v2/combined/find?email='.$email,
             $this->accessToken
         );
+
+        return json_decode($res->getBody());
     }
 }
