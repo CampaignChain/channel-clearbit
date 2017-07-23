@@ -40,14 +40,10 @@ class ClearbitClient
     {
         $this->em = $managerRegistry->getManager();
         $this->validator = $validator;
-    }
 
-    public function connect(){
         /** @var Clearbit $clearbitLocation */
         $clearbitLocation = $this->em->getRepository('CampaignChainLocationClearbitBundle:Clearbit')->findOneBy([], ['id' => 'ASC']);
         $this->accessToken = $clearbitLocation->getApiKey();
-
-        return $this;
     }
 
     static private function getResponse($method, $url, $apiKey)
