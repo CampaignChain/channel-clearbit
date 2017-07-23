@@ -23,6 +23,8 @@ use CampaignChain\Security\Authentication\Client\OAuthBundle\EntityService\Appli
 use CampaignChain\Security\Authentication\Client\OAuthBundle\EntityService\TokenService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Guzzle\Http\Client;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Validator\RecursiveValidator;
 
 class ClearbitClient
 {
@@ -30,11 +32,14 @@ class ClearbitClient
 
     protected $em;
 
+    protected $validator;
+
     protected $accessToken;
 
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(ManagerRegistry $managerRegistry, RecursiveValidator $validator)
     {
         $this->em = $managerRegistry->getManager();
+        $this->validator = $validator;
     }
 
     public function connect(){
@@ -56,7 +61,7 @@ class ClearbitClient
     static public function isValidApiKey($apiKey)
     {
         try {
-            $client = self::getResponse(
+            self::getResponse(
                 'GET',
                 'https://person-stream.clearbit.com/v2/combined/find?email=alex@alexmaccaw.com',
                 $apiKey
@@ -66,5 +71,22 @@ class ClearbitClient
         }
 
         return true;
+    }
+
+    public function getEnrichmentCombined($email)
+    {
+        $emailConstraint = new Email();
+        $errors = $this->validator->validate($email, $emailConstraint);
+
+        if(count($errors) > 0){
+            $errorsString = (string) $errors;
+            throw new \Exception($errorsString);
+        }
+
+        self::getResponse(
+            'GET',
+            'https://person-stream.clearbit.com/v2/combined/find?email='.$email,
+            $this->accessToken
+        );
     }
 }

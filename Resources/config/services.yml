@@ -17,3 +17,4 @@ services:
         class: CampaignChain\Channel\ClearbitBundle\REST\ClearbitClient
         arguments:
             - '@doctrine'
+            - '@validator'
