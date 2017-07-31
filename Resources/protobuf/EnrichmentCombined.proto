@@ -1,0 +1,13 @@
+/**
+ * https://clearbit.com/docs#enrichment-api-combined-api
+ */
+
+syntax = "proto3";
+import "EnrichmentPerson.proto";
+import "EnrichmentCompany.proto";
+package EnrichmentCombined;
+
+message EnrichmentCombined {
+    EnrichmentPerson person = 1;
+    EnrichmentCompany company = 2;
+}

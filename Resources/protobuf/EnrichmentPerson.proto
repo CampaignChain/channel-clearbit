@@ -1,0 +1,95 @@
+/**
+ * https://clearbit.com/docs#enrichment-api-person-api
+ */
+
+syntax = "proto3";
+import "import/Enrichment.proto";
+package EnrichmentPerson;
+
+/*
+ * Person data.
+ */
+message EnrichmentPerson {
+    string id = 1;
+    Name name = 2;
+    string email = 3;
+    string gender = 4;
+    string location = 5;
+    string timeZone = 6;
+    sint32 utcOffset = 7;
+    Geo geo = 8;
+    string bio = 9;
+    string site = 10;
+    string avatar = 11;
+    Employment employment = 12;
+    Facebook facebook = 13;
+    Github github = 14;
+    Twitter twitter = 15;
+    Linkedin linkedin = 16;
+    GooglePlus googleplus = 17;
+    AboutMe aboutme = 18;
+    Gravatar gravatar = 19;
+    bool fuzzy = 20;
+    bool emailProvider = 21;
+    string indexedAt = 22;
+}
+
+message Name {
+    string fullName = 1;
+    string givenName = 2;
+    string familiyName = 3;
+}
+
+message Geo {
+    string city = 1;
+    string state = 2;
+    string stateCode = 3;
+    string country = 4;
+    string countryCode = 5;
+    float lat = 6;
+    float lng = 7;
+}
+
+message Employment {
+    string domain = 1;
+    string name = 2;
+    string title = 3;
+    string role = 4;
+    string seniority = 5;
+}
+
+message Github {
+    string handle = 1;
+    string avatar = 2;
+    string company = 3;
+    string blog = 4;
+    int32 followers = 5;
+    int32 following = 6;
+}
+
+message GooglePlus {
+    string handle = 1;
+}
+
+message AboutMe {
+    string handle = 1;
+    string bio = 2;
+    string avatar = 3;
+}
+
+message Gravatar {
+    string handle = 1;
+    repeated GravatarUrls urls =2;
+    string avatar = 3;
+    repeated GravatarAvatars avatars = 4;
+}
+
+message GravatarUrls {
+    string value = 1;
+    string title = 2;
+}
+
+message GravatarAvatars {
+    string url = 1;
+    string type = 2;
+}

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+message Facebook {
+    string handle = 1;
+}
+
+message Github {
+    string handle = 1;
+    string avatar = 2;
+    string company = 3;
+    string blog = 4;
+    int32 followers = 5;
+    int32 following = 6;
+}
+
+message Twitter {
+    string handle = 1;
+    int32 id = 2;
+    string bio = 3;
+    int32 followers = 4;
+    int32 following = 5;
+    string location = 6;
+    string site = 7;
+    string avatar = 8;
+}
+
+message Linkedin {
+    string handle = 1;
+}

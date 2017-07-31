@@ -1,0 +1,84 @@
+/**
+ * https://clearbit.com/docs#enrichment-api-company-api
+ */
+
+syntax = "proto3";
+import "import/Enrichment.proto";
+package EnrichmentCompany;
+
+message EnrichmentCompany {
+    string id = 1;
+    string name = 2;
+    string legalName = 3;
+    string domain = 4;
+    repeated string domainAliases = 5;
+    Site site = 6;
+    Category category = 7;
+    repeated string tags = 8;
+    string description = 9;
+    int32 foundedYear = 10;
+    string location = 11;
+    string timeZone = 12;
+    sint32 utcOffset = 13;
+    Geo geo = 14;
+    string logo = 15;
+    Facebook facebook = 16;
+    Linkedin linkedin = 17;
+    Twitter twitter = 18;
+    Crunchbase crunchbase = 19;
+    bool emailProvider = 20;
+    string type = 21;
+    string ticker = 22;
+    string phone = 23;
+    string indexedAt = 24;
+    Metrics metrics = 25;
+    repeated string tech = 26;
+}
+
+message Site {
+    string title = 1;
+    string h1 = 2;
+    string metaDescription = 3;
+    string metaAuthor = 4;
+    repeated string phoneNumbers = 5;
+    repeated string emailAddresses = 6;
+}
+
+message Category {
+    string sector = 1;
+    string industryGroup = 2;
+    string industry = 3;
+    string subIndustry = 4;
+    int32 sicCode = 5;
+    int32 naicsCode = 6;
+}
+
+message Geo {
+    int32 streetNumber = 1;
+    string streetName = 2;
+    string subPremise = 3;
+    string city = 4;
+    int32 postalCode = 5;
+    string state = 6;
+    string stateCode = 7;
+    string country = 8;
+    string countryCode = 9;
+    float lat = 10;
+    float lng = 11;
+}
+
+message Crunchbase {
+    string handle = 1;
+}
+
+message Metrics {
+    int32 alexaUsRank = 1;
+    int32 alexaGlobalRank = 2;
+    int32 googleRank = 3;
+    int32 employees = 4;
+    string employeesRange = 5;
+    int64 marketCap = 6;
+    int64 raised = 7;
+    int64 annualRevenue = 8;
+    int32 fiscalYearEnd = 9;
+}
