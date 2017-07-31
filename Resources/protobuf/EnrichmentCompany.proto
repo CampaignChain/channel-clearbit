@@ -3,7 +3,12 @@
  */
 
 syntax = "proto3";
-import "import/Enrichment.proto";
+
+import "global/Metrics.proto";
+import "global/Facebook.proto";
+import "global/Twitter.proto";
+import "global/Linkedin.proto";
+
 package EnrichmentCompany;
 
 message EnrichmentCompany {
@@ -22,16 +27,16 @@ message EnrichmentCompany {
     sint32 utcOffset = 13;
     Geo geo = 14;
     string logo = 15;
-    Facebook facebook = 16;
-    Linkedin linkedin = 17;
-    Twitter twitter = 18;
+    global.Facebook facebook = 16;
+    global.Linkedin linkedin = 17;
+    global.Twitter twitter = 18;
     Crunchbase crunchbase = 19;
     bool emailProvider = 20;
     string type = 21;
     string ticker = 22;
     string phone = 23;
     string indexedAt = 24;
-    Metrics metrics = 25;
+    global.Metrics metrics = 25;
     repeated string tech = 26;
 }
 
@@ -69,16 +74,4 @@ message Geo {
 
 message Crunchbase {
     string handle = 1;
-}
-
-message Metrics {
-    int32 alexaUsRank = 1;
-    int32 alexaGlobalRank = 2;
-    int32 googleRank = 3;
-    int32 employees = 4;
-    string employeesRange = 5;
-    int64 marketCap = 6;
-    int64 raised = 7;
-    int64 annualRevenue = 8;
-    int32 fiscalYearEnd = 9;
 }

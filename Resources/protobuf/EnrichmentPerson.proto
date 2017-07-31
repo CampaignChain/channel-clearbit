@@ -3,7 +3,11 @@
  */
 
 syntax = "proto3";
-import "import/Enrichment.proto";
+
+import "global/Facebook.proto";
+import "global/Twitter.proto";
+import "global/Linkedin.proto";
+
 package EnrichmentPerson;
 
 /*
@@ -22,10 +26,10 @@ message EnrichmentPerson {
     string site = 10;
     string avatar = 11;
     Employment employment = 12;
-    Facebook facebook = 13;
+    global.Facebook facebook = 13;
     Github github = 14;
-    Twitter twitter = 15;
-    Linkedin linkedin = 16;
+    global.Twitter twitter = 15;
+    global.Linkedin linkedin = 16;
     GooglePlus googleplus = 17;
     AboutMe aboutme = 18;
     Gravatar gravatar = 19;

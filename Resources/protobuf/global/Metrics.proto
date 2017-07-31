@@ -1,0 +1,14 @@
+syntax = "proto3";
+package global;
+
+message Metrics {
+    int32 alexaUsRank = 1;
+    int32 alexaGlobalRank = 2;
+    int32 googleRank = 3;
+    int32 employees = 4;
+    string employeesRange = 5;
+    int64 marketCap = 6;
+    int64 raised = 7;
+    int64 annualRevenue = 8;
+    int32 fiscalYearEnd = 9;
+}

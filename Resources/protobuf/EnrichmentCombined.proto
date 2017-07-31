@@ -8,6 +8,6 @@ import "EnrichmentCompany.proto";
 package EnrichmentCombined;
 
 message EnrichmentCombined {
-    EnrichmentPerson person = 1;
-    EnrichmentCompany company = 2;
+    EnrichmentPerson.EnrichmentPerson person = 1;
+    EnrichmentCompany.EnrichmentCompany company = 2;
 }

@@ -1,0 +1,13 @@
+syntax = "proto3";
+package global;
+
+message Twitter {
+    string handle = 1;
+    int32 id = 2;
+    string bio = 3;
+    int32 followers = 4;
+    int32 following = 5;
+    string location = 6;
+    string site = 7;
+    string avatar = 8;
+}

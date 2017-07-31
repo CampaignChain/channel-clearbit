@@ -1,0 +1,6 @@
+syntax = "proto3";
+package global;
+
+message Facebook {
+    string handle = 1;
+}
