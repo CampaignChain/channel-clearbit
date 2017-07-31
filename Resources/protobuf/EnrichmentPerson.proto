@@ -4,9 +4,9 @@
 
 syntax = "proto3";
 
-import "global/Facebook.proto";
-import "global/Twitter.proto";
-import "global/Linkedin.proto";
+import "_Facebook.proto";
+import "_Twitter.proto";
+import "_Linkedin.proto";
 
 package EnrichmentPerson;
 
@@ -26,10 +26,10 @@ message EnrichmentPerson {
     string site = 10;
     string avatar = 11;
     Employment employment = 12;
-    global.Facebook facebook = 13;
+    _Facebook facebook = 13;
     Github github = 14;
-    global.Twitter twitter = 15;
-    global.Linkedin linkedin = 16;
+    _Twitter twitter = 15;
+    _Linkedin linkedin = 16;
     GooglePlus googleplus = 17;
     AboutMe aboutme = 18;
     Gravatar gravatar = 19;

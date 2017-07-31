@@ -1,7 +1,6 @@
 syntax = "proto3";
-package global;
 
-message Twitter {
+message _Twitter {
     string handle = 1;
     int32 id = 2;
     string bio = 3;

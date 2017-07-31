@@ -1,7 +1,6 @@
 syntax = "proto3";
-package global;
 
-message Metrics {
+message _Metrics {
     int32 alexaUsRank = 1;
     int32 alexaGlobalRank = 2;
     int32 googleRank = 3;

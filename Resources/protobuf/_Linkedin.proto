@@ -1,6 +1,5 @@
 syntax = "proto3";
-package global;
 
-message Facebook {
+message _Linkedin {
     string handle = 1;
 }
