@@ -63,7 +63,7 @@ message Geo {
     string streetName = 2;
     string subPremise = 3;
     string city = 4;
-    int32 postalCode = 5;
+    string postalCode = 5;
     string state = 6;
     string stateCode = 7;
     string country = 8;
