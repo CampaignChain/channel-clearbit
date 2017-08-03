@@ -2,7 +2,7 @@ syntax = "proto3";
 
 message _Twitter {
     string handle = 1;
-    int32 id = 2;
+    int64 id = 2;
     string bio = 3;
     int32 followers = 4;
     int32 following = 5;
