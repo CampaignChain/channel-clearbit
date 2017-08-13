@@ -54,7 +54,7 @@ class ClearbitClient
             $res = $client->request($method, 'https://' . $apiKey . '@' . str_replace('https://', '', $url));
             return json_decode($res->getBody(), true);
         } catch(\Exception $e){
-            throw new ExternalApiException($e->getMessage(), $e->getCode());
+            throw new ExternalApiException($e->getMessage(), $e->getCode(), $e);
         }
     }
 
