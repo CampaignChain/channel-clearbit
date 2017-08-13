@@ -17,12 +17,13 @@
 
 namespace CampaignChain\Channel\ClearbitBundle\REST;
 
+use CampaignChain\CoreBundle\Exception\ExternalApiException;
 use CampaignChain\Location\ClearbitBundle\Entity\Clearbit;
 use CampaignChain\Security\Authentication\Client\OAuthBundle\Entity\Token;
 use CampaignChain\Security\Authentication\Client\OAuthBundle\EntityService\ApplicationService;
 use CampaignChain\Security\Authentication\Client\OAuthBundle\EntityService\TokenService;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Guzzle\Http\Client;
+use GuzzleHttp\Client;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 
@@ -48,10 +49,13 @@ class ClearbitClient
 
     static private function getResponse($method, $url, $apiKey)
     {
-        $client = new \GuzzleHttp\Client();
-        $res = $client->request($method, 'https://'.$apiKey.'@'.str_replace('https://', '', $url));
-
-        return $res;
+        try {
+            $client = new Client();
+            $res = $client->request($method, 'https://' . $apiKey . '@' . str_replace('https://', '', $url));
+            return json_decode($res->getBody(), true);
+        } catch(\Exception $e){
+            throw new ExternalApiException($e->getMessage(), $e->getCode());
+        }
     }
 
     static public function isValidApiKey($apiKey)
@@ -79,12 +83,10 @@ class ClearbitClient
             throw new \Exception($errorsString);
         }
 
-        $res = self::getResponse(
+        return self::getResponse(
             'GET',
             'https://person-stream.clearbit.com/v2/combined/find?email='.$email,
             $this->accessToken
         );
-
-        return json_decode($res->getBody());
     }
 }
