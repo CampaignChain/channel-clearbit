@@ -43,7 +43,7 @@ class ClearbitController extends Controller
             $isNew = false;
         }
 
-        $form = $this->createFormBuilder($clearbitLocation)
+        $form = $this->createFormBuilder(Clearbit::class)
             ->add('apiKey', 'text', array(
                 'label' => 'API Key',
                 'attr' => array('help_text' => 'Find your API key at https://dashboard.clearbit.com/api')
