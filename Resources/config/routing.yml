@@ -13,9 +13,9 @@
 # limitations under the License.
 
 campaignchain_channel_clearbit_create:
-    pattern: /channel/clearbit/create
+    path: /channel/clearbit/create
     defaults: { _controller: CampaignChainChannelClearbitBundle:Clearbit:create }
 
 #campaignchain_channel_clearbit_login:
-#    pattern:  /channel/clearbit/create/login
+#    path:  /channel/clearbit/create/login
 #    defaults: { _controller: CampaignChainChannelClearbitBundle:Clearbit:login }
