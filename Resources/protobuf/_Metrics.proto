@@ -2,7 +2,7 @@ syntax = "proto3";
 
 message _Metrics {
     int32 alexaUsRank = 1;
-    int32 alexaGlobalRank = 2;
+    int64 alexaGlobalRank = 2;
     int32 googleRank = 3;
     int32 employees = 4;
     string employeesRange = 5;
