@@ -25,6 +25,7 @@ use CampaignChain\Security\Authentication\Client\OAuthBundle\EntityService\Token
 use Doctrine\Common\Persistence\ManagerRegistry;
 use GuzzleHttp\Client;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Ip;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 
 class ClearbitClient
@@ -86,6 +87,32 @@ class ClearbitClient
         return self::getResponse(
             'GET',
             'https://person-stream.clearbit.com/v2/combined/find?email='.$email,
+            $this->accessToken
+        );
+    }
+
+    public function getEnrichmentCompanyDomainLookup($domain)
+    {
+        return self::getResponse(
+            'GET',
+            'https://company.clearbit.com/v2/companies/find?domain='.$domain,
+            $this->accessToken
+        );
+    }
+
+    public function getReveal($ip)
+    {
+        $ipConstraint = new Ip();
+        $errors = $this->validator->validate($ip, $ipConstraint);
+
+        if(count($errors) > 0){
+            $errorsString = (string) $errors;
+            throw new \Exception($errorsString);
+        }
+
+        return self::getResponse(
+            'GET',
+            'https://reveal.clearbit.com/v1/companies/find?ip='.$ip,
             $this->accessToken
         );
     }

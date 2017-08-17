@@ -1,0 +1,14 @@
+/**
+ * https://clearbit.com/docs#enrichment-api-combined-api
+ */
+
+syntax = "proto3";
+import "EnrichmentCompany.proto";
+package Reveal;
+
+message Reveal {
+    string ip = 1;
+    bool   fuzzy = 2;
+    string domain = 3;
+    EnrichmentCompany.EnrichmentCompany company = 4;
+}

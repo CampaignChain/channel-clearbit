@@ -59,7 +59,7 @@ message Category {
 }
 
 message Geo {
-    int32 streetNumber = 1;
+    string streetNumber = 1;
     string streetName = 2;
     string subPremise = 3;
     string city = 4;
