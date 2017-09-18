@@ -1,0 +1,72 @@
+elasticsearch:
+    mappings:
+        properties:
+            id: {type: keyword}
+            name: {type: keyword}
+            legalName: {type: keyword}
+            domainAliases: {}
+            site:
+                properties:
+                    title: {type: keyword}
+                    h1: {type: keyword}
+                    metaDescription: {type: text}
+                    metaAuthor: {type: keyword}
+                    phoneNumbers: {}
+                    emailAdresses: {}
+            category:
+                properties:
+                    sector: {type: keyword}
+                    industryGroup: {type: keyword}
+                    industry: {type: keyword}
+                    subIndustry: {type: keyword}
+                    sicCode: {type: integer}
+                    naicsCode: {type: integer}
+            tags: {}
+            description: {type: text}
+            foundedYear: {type: integer}
+            location: {type: keyword}
+            timeZone: {type: keyword}
+            utcOffset: {type: byte}
+            geo:
+                properties:
+                    streetNumber: {type: keyword}
+                    streetName: {type: keyword}
+                    subPremise: {type: keyword}
+                    city: {type: keyword}
+                    postalCode: {type: keyword}
+                    state: {type: keyword}
+                    country: {type: keyword}
+                    countryCode: {type: keyword}
+                    lat: {type: float}
+                    lng: {type: float}
+            logo: {type: keyword}
+            metrics:
+                properties:
+                    alexaUsRank: {type: integer}
+                    alexaGlobalRank: {type: long}
+                    googleRank: {type: integer}
+                    employees: {type: integer}
+                    employeesRange: {type: keyword}
+                    marketCap: {type: long}
+                    raised: {type: long}
+                    annualRevenue: {type: long}
+                    fiscalYearEnd: {type: short}
+            facebook:
+                properties:
+                    handle: {type: keyword}
+            linkedin:
+                properties:
+                    handle: {type: keyword}
+            twitter:
+                properties:
+                    handle: {type: keyword}
+                    id: {type: long}
+                    bio: {type: text}
+                    followers: {type: integer}
+                    following: {type: integer}
+                    location: {type: keyword}
+                    site: {type: keyword}
+                    avatar: {type: keyword}
+            crunchbase:
+                properties:
+                    handle: {type: keyword}
