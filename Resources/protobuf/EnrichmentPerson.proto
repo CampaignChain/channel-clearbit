@@ -41,7 +41,7 @@ message EnrichmentPerson {
 message Name {
     string fullName = 1;
     string givenName = 2;
-    string familiyName = 3;
+    string familyName = 3;
 }
 
 message Geo {
