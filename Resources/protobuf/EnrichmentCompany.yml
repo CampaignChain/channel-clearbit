@@ -7,10 +7,6 @@ elasticsearch:
             domainAliases: {}
             site:
                 properties:
-                    title: {type: keyword}
-                    h1: {type: keyword}
-                    metaDescription: {type: text}
-                    metaAuthor: {type: keyword}
                     phoneNumbers: {}
                     emailAdresses: {}
             category:
@@ -44,7 +40,6 @@ elasticsearch:
                 properties:
                     alexaUsRank: {type: integer}
                     alexaGlobalRank: {type: long}
-                    googleRank: {type: integer}
                     employees: {type: integer}
                     employeesRange: {type: keyword}
                     marketCap: {type: long}
