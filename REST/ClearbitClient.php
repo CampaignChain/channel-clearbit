@@ -18,12 +18,14 @@
 namespace CampaignChain\Channel\ClearbitBundle\REST;
 
 use CampaignChain\CoreBundle\Exception\ExternalApiException;
+use CampaignChain\CoreBundle\Util\ParserUtil;
 use CampaignChain\Location\ClearbitBundle\Entity\Clearbit;
 use CampaignChain\Security\Authentication\Client\OAuthBundle\Entity\Token;
 use CampaignChain\Security\Authentication\Client\OAuthBundle\EntityService\ApplicationService;
 use CampaignChain\Security\Authentication\Client\OAuthBundle\EntityService\TokenService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Ip;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
@@ -48,12 +50,23 @@ class ClearbitClient
         $this->accessToken = $clearbitLocation->getApiKey();
     }
 
-    static private function getResponse($method, $url, $apiKey)
+    static private function getResponse($method, $url, $apiKey, $params = array())
     {
+        $jsonOptions = array();
+        if(count($params)){
+            $jsonOptions = array('json' => $params);
+        }
+
         try {
             $client = new Client();
-            $res = $client->request($method, 'https://' . $apiKey . '@' . str_replace('https://', '', $url));
+            $res = $client->request(
+                $method,
+                'https://' . $apiKey . '@' . str_replace('https://', '', $url),
+                $jsonOptions
+            );
             return json_decode($res->getBody(), true);
+        } catch(RequestException $e){
+            throw new RequestException($e->getMessage(), $e->getRequest(), $e->getResponse(), $e);
         } catch(\Exception $e){
             throw new ExternalApiException($e->getMessage(), $e->getCode(), $e);
         }
@@ -114,6 +127,27 @@ class ClearbitClient
             'GET',
             'https://reveal.clearbit.com/v1/companies/find?ip='.$ip,
             $this->accessToken
+        );
+    }
+
+    public function isValidEmail($email)
+    {
+        $emailConstraint = new Email();
+        $errors = $this->validator->validate($email, $emailConstraint);
+
+        if(count($errors) > 0){
+            $errorsString = (string) $errors;
+            throw new \Exception($errorsString);
+        }
+
+        return self::getResponse(
+            'POST',
+            'https://risk.clearbit.com/v1/calculate',
+            $this->accessToken,
+            array(
+                'email' => $email,
+                'ip' => ParserUtil::getIpFromEmail($email),
+            )
         );
     }
 }
